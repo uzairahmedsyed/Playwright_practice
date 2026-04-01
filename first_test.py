@@ -53,8 +53,27 @@ with sync_playwright() as p:
     login_btn = browser_tab.locator(".login-btn")
     login_btn.click()
 
-    
+
     browser_tab.wait_for_load_state("networkidle")
+
+
+    # Captcha locator define karen
+    captcha_popup_close = browser_tab.locator("button.close[aria-label='Close']")
+
+    # 3 seconds tak wait karo, agar popup nazar aaye toh close kar do
+    if captcha_popup_close.is_visible(timeout=3000):
+        print("Captcha popup detected. Closing now...")
+        captcha_popup_close.click()
+        # Click ke baad thora intezar taake popup animation khatam ho jaye
+        
+        browser_tab.wait_for_timeout(1000)
+
+    else:
+        print("No Captcha popup appeared. Proceeding...")
+
+
+    captcha_popup_close.wait_for(state="hidden")
+    print("captcha close hogaya")
 
 
 
@@ -79,24 +98,44 @@ with sync_playwright() as p:
     cart_icon.wait_for(timeout=10000)
     cart_icon.click()
 
+    
+    browser_tab.wait_for_load_state("networkidle")
+
 
     cart_timer_popup = browser_tab.locator(".rental-cart-timer_button__yDKJ4")
     cart_timer_popup.click()
 
 
-    checkout_btn = browser_tab.locator(".mt-30 cart-checkout ")
-    checkout_btn.click()
+    browser_tab.wait_for_load_state("networkidle")
+
+    #checkout_btn = browser_tab.locator(".mt-30 cart-checkout ")
+    #checkout_btn.click()
+
+    chk_btn = browser_tab.get_by_text("Proceed to checkout")
+    chk_btn.wait_for(state="visible")
+    chk_btn.click()
 
 
     browser_tab.wait_for_load_state("networkidle")
 
+    ship_cost = browser_tab.locator(".shippingRadio").first
+    #ship_cost.wait_for(state="visible", timeout=5000)
+    ship_cost.wait_for(state="visible")
+    ship_cost.check()
 
+    
 
+    checkbox_TermAndCondition = browser_tab.locator(".accept-terms input[name=termCondition]").first
+    checkbox_TermAndCondition.wait_for(state="visible")
+    checkbox_TermAndCondition.check()
 
+    
+    place_order =browser_tab.locator(".btn placeYourOrder").first
+    place_order.click()
 
-
+    browser_tab.wait_for_load_state("networkidle")
 
 
     # 5. Browser band karna
-    # browser.close()
-    browser_tab.wait_for_timeout(100000)
+    browser_tab.close()
+    
