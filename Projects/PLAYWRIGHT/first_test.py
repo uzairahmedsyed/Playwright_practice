@@ -40,7 +40,7 @@ with sync_playwright() as p:
 
     email_field = browser_tab.locator("#email")
     email_field.wait_for(state="visible")
-    email_field.fill("testuzair28march26dev1@yopmail.com")
+    email_field.fill("testabc28march26dev1@yopmail.com")
 
 
     # password per abhi autofocus hai toh sirf text field mein input krna hai 
