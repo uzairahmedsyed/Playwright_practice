@@ -1,4 +1,9 @@
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 from playwright.sync_api import sync_playwright
+
 
 with sync_playwright() as p:
     # 1. Browser kholna (headless=False taake aapko nazar aaye)
@@ -40,14 +45,14 @@ with sync_playwright() as p:
 
     email_field = browser_tab.locator("#email")
     email_field.wait_for(state="visible")
-    email_field.fill("testabc28march26dev1@yopmail.com")
+    email_field.fill(os.getenv("EMAIL"))
 
 
     # password per abhi autofocus hai toh sirf text field mein input krna hai 
 
     password_field = browser_tab.locator("#password")
     password_field.wait_for(state="visible")
-    password_field.fill("testing")
+    password_field.fill(os.getenv("PASSWORD"))
 
 
     login_btn = browser_tab.locator(".login-btn")
